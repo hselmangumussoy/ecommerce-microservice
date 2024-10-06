@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/auth" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/basket" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/eureka" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/gateway" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/payment" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/stock" vcs="Git" />
+  </component>
+</project>

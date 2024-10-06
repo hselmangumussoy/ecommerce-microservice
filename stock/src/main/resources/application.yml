@@ -1,0 +1,17 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: stock
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/stock
+    username: root
+    password: hSelMan%231?!
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  main:
+    allow-circular-references: true
