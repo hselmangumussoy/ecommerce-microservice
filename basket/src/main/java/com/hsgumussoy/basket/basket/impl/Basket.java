@@ -36,6 +36,8 @@ public class Basket {
     @Column(name = COUNT)
     private double count;
 
-    @OneToMany(mappedBy = Basket.TABLE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "basket", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @SequenceGenerator(name = "basket_product_seq", sequenceName = "basket_product_seq", allocationSize = 1)
     private List<BasketProduct> basketProductList;
+
 }

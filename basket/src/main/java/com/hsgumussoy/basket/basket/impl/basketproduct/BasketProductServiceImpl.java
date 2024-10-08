@@ -12,6 +12,10 @@ public class BasketProductServiceImpl{
         return repository.findByBasket_IdAndProductId(basketId,productId);
     }
 
+//    public void save(BasketProduct basketProduct) {
+//        repository.save(basketProduct);
+//    }
+
 //        public void delete(String productId) {
 //            repository.deleteById(Long.valueOf(productId));
 //        }

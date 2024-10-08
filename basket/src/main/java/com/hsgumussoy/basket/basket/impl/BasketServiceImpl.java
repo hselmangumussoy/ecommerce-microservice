@@ -29,7 +29,7 @@ public class BasketServiceImpl implements BasketService {
     @Transactional
     public BasketDto addProductToBasket(AddBasketDto dto){
         UserDto user = getUserById(String.valueOf(dto.getUserId())).orElseThrow(()-> new RuntimeException("User not found"));
-        Basket basket = repository.findBasketByUserIdAndStatusEquals(user.getUserId(),BASKET_STATUS_NONE);
+        Basket basket = repository.findBasketByUserIdAndStatusEquals(user.getId(),BASKET_STATUS_NONE);
         if (basket != null){
             return basketExistsAddNewProduct(basket, dto);
         }else {
@@ -54,33 +54,34 @@ public class BasketServiceImpl implements BasketService {
             basketProductList.add(basketProduct);
         }
         basket.setBasketProductList(basketProductList);
-        basket.setTotalPrice(calculateTotalPrice(dto.getCount(), product.getPrice()));
+        basket.setTotalPrice(calculateTotalPrice(basketProductList));
         repository.save(basket);
 
         return BasketMapper.toDto(basket);
 
     }
+
     @Transactional
     public BasketDto basketDoesntExistAddNewProduct(AddBasketDto dto, UserDto user) {
         Basket basket = new Basket();
         basket.setStatus(BASKET_STATUS_NONE);
-        basket.setUserId(user.getUserId());
+        basket.setUserId(user.getId());
         basket.setCount(dto.getCount());
 
-        List<BasketProduct> basketProductList = new ArrayList<>();
         ProductDto product = getProductById(String.valueOf(dto.getProductId()))
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
         BasketProduct newBasketProduct = createBasketProduct(product, basket, new BasketProduct(), dto);
+        List<BasketProduct> basketProductList = new ArrayList<>();
         basketProductList.add(newBasketProduct);
 
         basket.setBasketProductList(basketProductList);
-        basket.setTotalPrice(calculateTotalPrice(dto.getCount(), product.getPrice()));
+        basket.setTotalPrice(calculateTotalPrice(basketProductList));
 
-        basket = repository.save(basket);
-
+        repository.save(basket);
         return BasketMapper.toDto(basket);
     }
+
 
 
     private BasketProduct createBasketProduct(ProductDto product, Basket basket ,BasketProduct newBasketProduct, AddBasketDto dto) {
@@ -108,9 +109,12 @@ public class BasketServiceImpl implements BasketService {
 //        }
 //        return totalPrice;
 //    }
-    private double calculateTotalPrice(double price, double count) {
-        return price * count;
-    }
+private double calculateTotalPrice(List<BasketProduct> basketProductList) {
+    return basketProductList.stream()
+            .mapToDouble(BasketProduct::getTotalAmount)
+            .sum();
+}
+
 
 
 //    @Override
